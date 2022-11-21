@@ -1,0 +1,31 @@
+{% extends 'enroll.html' %}
+{% block form_head %}Register{% endblock %}
+{% block form %}
+		<form action="{{url_for('register')}}" method="POST" class="form p-3 mx-lg-5">
+			<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+			{% block form_fields %}
+				<input type="text" class="form-control" name="surname" placeholder="Surname" required>
+				<input type="text" class="form-control" name="firstname" placeholder="Firstname" required>
+				<input type="email" class="form-control" name="email" placeholder="Email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required>
+				<input type="tel" class="form-control" name="phone" placeholder="Phone" required>
+				<div class="row px-2">
+					<select class="form-control form-select my-2" name="school" hx-trigger="change, focus" hx-get="/get-departments" hx-target="#departments" title="school">
+						{% for x in s %}
+						<option value="{{x.name}}">{{x.name}}</option>
+						{% endfor %}
+					</select>
+					<select class="form-control form-select my-2" name="department"  id="departments" title="department">
+					</select>
+				</div>
+				<input type="password" class="form-control" name="password" placeholder="Password" required>				
+				<input type="password" class="form-control" name="password2" placeholder="Confirm Password" required>
+			{% endblock form_fields %}
+			<input type="submit" class="btn btn-primary" value="Submit" />
+		</form>
+	{% endblock form %}
+	
+{%  block guide %}
+<div class="d-block text-center">
+    <p class="mx-auto my-5 align-items-center h4">Already Registered?&nbsp;<a href="{{url_for('login')}}" class="btn btn-outline-primary">Login &RightArrow;</a></p>
+</div>
+{% endblock guide %}

@@ -1,0 +1,54 @@
+{% extends 'index.html' %}
+{% block nav %}{% endblock nav %}
+{% block body %}
+<div class="d-block justify-content-center p-5">
+	<div class="d-block py-5">
+		<div class="d-block w-50 mx-auto">
+			<div class="  py-2 bg-dark text-center">
+				<a class=" h1 font-bolder text-white" href="{{url_for('index')}}">Attend</a>
+			</div>
+		</div>
+		<div class="d-block w-50 mx-auto">
+			{% with messages = get_flashed_messages() %}
+				{% if messages %}
+					<ul class=flashes>
+						{% for message in messages %}
+							<li class="alert alert-info">{{ message }}</li>
+						{% endfor %}
+					</ul>
+				{% endif %}
+			{% endwith %}
+		</div>
+		<div class="card mx-auto my-5">
+			<div class="card-header text-center">
+				<h2>{% block form_head %}Enroll{% endblock form_head%}</h2>
+			</div>
+			<div class="card-body p-2">
+			{% block form %}
+				<form action="{{url_for('addStudent')}}" method="POST" class="form p-3">
+					<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+				{% block form_fields %}
+					<input type="text" class="form-control my-3" name="surname" placeholder="surname" required>
+					<input type="text" class="form-control my-3" name="firstname" placeholder="firstname" required>
+					<input type="text" class="form-control my-3" name="phone" placeholder="phone" required>
+					<input type="text" class="form-control my-3" name="email" placeholder="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required>
+					<div class="row px-2">
+						<select class="form-control form-select my-2" name="school" hx-trigger="change, focus" hx-get="/get-departments" hx-target="#departments" title="school">
+							{% for x in schools %}
+							<option value="{{x.name}}">{{x.name}}</option>
+							{% endfor %}
+						</select>
+						<select class="form-control form-select my-2" name="department"  id="departments" title="department">
+						</select>
+					</div>
+					<input type="text" class="form-control my-3" name="mat_no" placeholder="matric number" required>
+				{% endblock form_fields %}
+					<input type="submit" class="btn btn-primary" value="Submit" />
+				</form>
+			{% endblock form %}
+			{%  block guide %}{% endblock guide %}
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock body %}

@@ -1,0 +1,17 @@
+{% extends 'enroll.html'%}
+{% block form_head %}Login{% endblock %}
+{% block form %}
+	<form action="{{url_for('login')}}" method="POST" class="form p-3 mx-lg-5">
+		<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+		{% block form_fields %}
+			<input type="email" class="form-control my-3" name="email" placeholder="Email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required>
+			<input type="password" class="form-control my-3" name="password" placeholder="Password" required>				
+		{% endblock form_fields %}
+		<input type="submit" class="btn btn-primary" value="Submit" />
+	</form>
+{% endblock form %}
+{%  block guide %}
+<div class="d-block text-center">
+    <p class="mx-auto my-5 align-items-center h4">Don't Have an Account Yet?&nbsp;<a href="{{url_for('register')}}" class="btn btn-outline-primary">Register &RightArrow;</a></p>
+</div>
+{% endblock guide %}

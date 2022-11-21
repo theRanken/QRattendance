@@ -1,0 +1,25 @@
+*{
+	list-style-type: none;
+}
+:root{
+	--bs-nav-link-color:#b1b1b1;
+}
+a{text-decoration:none !important; color:inherit}
+nav ul li a{
+	padding: 1em 0 !important ;
+}
+nav ul li{
+	margin-left: .75rem;
+	margin-right: .75rem;
+}
+
+nav ul li:hover, nav ul li:focus{
+	background: rgba(0,0,0,0.75);
+	color:#fefefe;
+}
+
+.action-tile:hover{
+	transform: translateY(-10px);
+	border: 2px outset black;
+	transition: .4s ease-in;
+}

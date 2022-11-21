@@ -1,0 +1,22 @@
+*{
+	list-style-type: none;
+}
+:root{
+	--bs-nav-link-color:#b1b1b1;
+}
+a{text-decoration:none !important; color:inherit}
+
+.sidebar ul li a{
+	padding: 1.2rem .75rem;
+	font-weight: 600;
+	line-height: 1.75em;
+}
+.sidebar ul li:hover a, .sidebar ul li:focus a{
+	background: rgba(255, 255, 255, 0.75);
+	color:rgba(0,0,0,.75);
+	transform: translateX(10px) scale(1);
+	border-radius:10px;
+	margin: .5em 0;
+	transition-property: transform, border-radius, margin;
+	transition-duration: .5s;
+}

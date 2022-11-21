@@ -1,0 +1,42 @@
+{% extends './index-admin.html' %}
+
+{% block body %}
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center my-4 p-3">
+        <div class="h4">Courses</div>
+        <div class="d-inline">
+            <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#add-course">Add Course</button>
+        </div>
+    </div>
+    <div class="table-responsive">          
+        <table class="table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Course Title</th>
+              <th>Course Code</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for course in courses %}
+            <tr>
+              <td>{{loop.index}}</td>
+              <td>{{course.title}}</td>
+              <td>{{course.code}}</td>
+              <td>
+                <div class="row">
+                    <a class="mx-1 btn btn-primary col-3 edit-button" href="#" data-bs-toggle="modal" data-bs-target="#edit-course" data-bs-title="{{course.title}}" data-bs-code="{{course.code}}" data-bs-id={{course.id}} hx-get="{{url_for('dashboard.setCourse', id=course.id)}}" hx-trigger="click show.bs.modal">Edit</a>
+                    <a class="mx-1 btn btn-danger col-3" href="{{ url_for('dashboard.deleteCourse', id=course.id) }}">Delete</a>
+                </div>
+              </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5" class="text-center display-5 p-5">No Courses Added</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+</div>
+{% endblock body %}
