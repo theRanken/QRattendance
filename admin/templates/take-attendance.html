@@ -18,8 +18,7 @@
             <div class="container">
                 <div class="d-block justify-content-between my-4 p-3">
                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="h4">Students Present: 0</div>
-                        <div class="h4">Students Absent: 0</div>
+                        <div class="h4" hx-get="/student/attendance/count" hx-trigger="load delay:1s" hx-swap="innerHTML">Students Present: 0</div>
                    </div>
                     <div class="table-responsive">          
                         <table class="table">
@@ -31,15 +30,8 @@
                                 <th>Actions</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                <td>1</td>
-                                <td>2</td>
-                                <td>3</td>
-                                <td>
-                                    4
-                                </td>
-                                </tr>
+                            <tbody hx-get="{{url_for('dashboard.getAttendances')}}" hx-trigger="getResult" id="attendance-result" hx-swap="innerHTML">
+                            <input type="hidden" value="url_for('{{'dashboard.addAttendance'}}')" id="add-url">
                             </tbody>
                         </table>
                     </div>
@@ -50,14 +42,32 @@
 </div>
 <script type="text/javascript">
     const  result = document.getElementById('scan-result')
+    htmx.logAll();
+   
+    function getNo(code_result){
+        return code_result.slice(-15).replace(';','');
+    }
 
     function onScanSuccess(decodedText, decodedResult) {
-        result.innerHTML = '<span class="result">Decoded Text: '+decodedText+'</span>';
-        result.innerHTML += '<span class="result">Decoded Result: '+decodedResult+'</span>';
+        decodedText = getNo(decodedText);
+        result.innerHTML = '<span class="result text-success">MAT_NO: '+decodedText+'</span>';
+
+        let data = new FormData();
+        data.append("mat_no", decodedText);
+
+        fetch('/admin/add-attendance/'.value,
+        {
+            "method": "POST",
+            "body": data,
+        })
+        .then(response => response.json())
+        .then(htmx.trigger("#attendance-result", "getResult"))
+        .catch(e => alert(e))
 
     }
     function onScanError(errorMessage) {
       //handle scan error
+      result.innerHTML = '<span class="result text-danger">MAT_NO: '+errorMessage+'</span>';
     }
     var html5QrcodeScanner = new Html5QrcodeScanner(
         "qr-reader", { fps: 10, qrbox: 250 });

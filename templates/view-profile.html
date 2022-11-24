@@ -2,14 +2,14 @@
 
 {% block body %}
 <div class="d-block p-5">
-    <div class="d-flex justify-content-center align-items-center p-5 w-50 mx-auto">
+    <div class="d-flex justify-content-center align-items-center p-5 mx-auto mx-lg-5 px-lg-5 flex-lg-wrap">
         <input
          type="search" 
          hx-get="{{url_for('view_student')}}"
          hx-target="#results"
          hx-trigger="search"
          
-        class="form-control p-3 rounded" name="mat" placeholder="Enter a Valid Matriculation Number" id="mat">
+        class="form-control p-3 rounded flex-grow-1" name="mat" placeholder="Enter a Valid Matriculation Number" id="mat">
         <button class="btn btn-primary btn-lg mx-3" id="view">View</button>
         <script>
             htmx.on("#view", "click", function(e){ 
@@ -17,9 +17,9 @@
             });
         </script>
     </div>
-    <div class="d-block w-75 border-1 mx-auto" id="results">
-            <figure class="d-block text-center">
-                <img src="https://cdn-icons-png.flaticon.com/512/4419/4419547.png" width="256" height="256" alt="Seach Icon">
+    <div class="d-block border-1 mx-auto mx-sm-1" id="results">
+            <figure class="text-center">
+                <img src="https://cdn-icons-png.flaticon.com/512/4419/4419547.png" class="img-thumbnail" alt="Seach Icon">
                 <figcaption class="text-muted">No Search Results</figcaption>
             </figure>
     </div>

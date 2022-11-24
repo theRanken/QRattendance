@@ -95,7 +95,7 @@ def addStudent():
 		matric_num = request.form.get('mat_no', 'None')
 		dept = request.form.get('department', 'None')
 
-		student_qr = generate_code(first_name, last_name, phone_no, e_mail, matric_num, dept, mat_no=matric_num)
+		student_qr = generate_code(f'{first_name} {last_name};', matric_num, mat_no=matric_num)
 		get_student_qr = get_qr_code(student_qr)
 
 		try:
@@ -156,10 +156,16 @@ def get_image(image):
 	bytes = io.BytesIO(student.qr_code)
 	return send_file(bytes, mimetype="image/png")
 
-app.register_blueprint(dashboard)
+@app.route('/student/attendance/count')
+def get_students_count():
+	lecturer_id = session['id']
+	attendance = Attendance.query.filter_by(course_lecturer_id=lecturer_id)
+	return f'Students Present: {attendance.count()}'
 
+app.register_blueprint(dashboard)
+print(app.url_map, flush=True)
 
 if __name__  == '__main__':	
 	# db.drop_all()
 	db.create_all()
-	app.run(debug=True)
+	app.run(debug=True, host="0.0.0.0", port=5000, ssl_context='adhoc')

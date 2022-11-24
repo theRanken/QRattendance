@@ -91,12 +91,39 @@ def editCourse(id):
         return redirect(url_for('dashboard.courses'))
 
 
-@dashboard.route("/take-attendance/", methods=['GET','POST'])
+@dashboard.route("/take-attendance/", methods=['GET'])
 @auth_required
 def takeAttendance():
     return render('take-attendance.html')
 
-@dashboard.route("/take-attendance/", methods=['GET','POST'])
+@dashboard.route("/get-attendance/", methods=['GET','POST'])
 @auth_required   
 def getAttendances():
-    return
+    lecturer_id = session['id']
+    attendance = Attendance.query.filter_by(course_lecturer_id=lecturer_id)
+    return render('./attendances.html', attendances=attendance)
+
+@dashboard.route("/add-attendance/", methods=['POST'])
+@auth_required   
+def addAttendance():
+    if request.method == 'POST':
+        try:
+            mat = request.form['mat_no']
+            student = Students.query.filter_by(mat_no=mat).first()
+            check_one = Attendance.query.one(student_id=student.id)
+
+            if check_one:
+                return "This student has scanned before!"
+
+            else:
+                attendance =  Attendance(
+                    student_id = student.id,
+                    course_id = 1,
+                    course_lecture_id = session['id']
+                )
+                db.session.add(attendance)
+                db.session.commit()
+                return "Added Successfully!"
+        except Exception as e:
+                print(f'Error:{e}', flush=True)
+    
